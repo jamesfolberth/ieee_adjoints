@@ -3,6 +3,8 @@ This repository contains code to reproduce the figures in the IEEE Signal Proces
 
 There are various dependencies, which can be fetched with `get_deps.m`.
 
+To download only our code under the MIT license, please see [ieee_adjoints_mit](https://github.com/jamesfolberth/ieee_adjoints_mit).
+
 ## Wavelet
 Our adjoint wavelet code is in the `wavelet/` directory.  The code to compute the adjoints of a few wavelet operators and extensions in provided in the `wavelet/adjoints/` directory.
 
