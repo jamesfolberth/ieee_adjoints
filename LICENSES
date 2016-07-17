@@ -1,0 +1,109 @@
+
+wavelet/adjoints and bce/
+====================
+Based on the lecture note
+J. Folberth and S. Becker, "Efficient Adjoint Computation for Wavelet and
+Convolution Operators", to appear in the IEEE Signal Processing Magazine.
+-----------------------------------------------------------------------
+The MIT License (MIT)
+Copyright © 2016, James Folberth and Stephen Becker
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the “Software”), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+-----------------------------------------------------------------------
+
+
+FISTA and
+wavelet/deblur_dwt_FISTA_trans_direct.m
+====================
+Based on the paper
+A. Beck and M. Teboulle, “A fast iterative shrinkage-thresholding algo-
+rithm for linear inverse problems,” SIAM Journal on Imaging Sciences,
+2009.
+-----------------------------------------------------------------------
+Copyright (2008): Amir Beck and Marc Teboulle
+
+FISTA is distributed under the terms of 
+the GNU General Public License 2.0.
+
+Permission to use, copy, modify, and distribute this software for
+any purpose without fee is hereby granted, provided that this entire
+notice is included in all copies of any software which is or includes
+a copy or modification of this software and in all copies of the
+supporting documentation for such software.
+This software is being provided "as is", without any express or
+implied warranty.  In particular, the authors do not make any
+representation or warranty of any kind concerning the merchantability
+of this software or its fitness for any particular purpose."
+----------------------------------------------------------------------
+
+
+SSIM
+====================
+Based on the paper
+Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, “Image
+quality assessment: from error visibility to structural similarity,” Image
+Processing, IEEE Transactions on, vol. 13, no. 4, pp. 600–612, 2004.
+-----------------------------------------------------------------------
+Copyright(c) 2003 Zhou Wang
+All Rights Reserved.
+
+The author is with Howard Hughes Medical Institute, and Laboratory
+for Computational Vision at Center for Neural Science and Courant
+Institute of Mathematical Sciences, New York University.
+
+----------------------------------------------------------------------
+Permission to use, copy, or modify this software and its documentation
+for educational and research purposes only and without fee is hereby
+granted, provided that this copyright notice and the original authors'
+names appear on all copies and supporting documentation. This program 
+shall not be used, rewritten, or adapted as the basis of a commercial 
+software or hardware product without first obtaining permission of the
+authors. The authors make no representations about the suitability of 
+this software for any purpose. It is provided "as is" without express 
+or implied warranty.
+----------------------------------------------------------------------
+
+
+HNO Toolbox
+====================
+Supporting materials for the textbook
+P. C. Hansen, J. G. Nagy, and D. P. O’Leary, Deblurring Images:
+matrices, spectra, and filtering. SIAM, 2006.
+-----------------------------------------------------------------------
+Copyright (c) 2006 by P. C. Hansen, J. G. Nagy, and D. P. O'Leary.
+-----------------------------------------------------------------------
+
+
+L1General
+====================
+https://www.cs.ubc.ca/~schmidtm/Software/L1General.html
+
+Mark Schmidt. Graphical Model Structure Learning with L1-Regularization.
+Ph.D. Thesis, University of British Columbia, 2010.
+
+Mark Schmidt, Glenn Fung, Romer Rosales. Optimization Methods for 
+L1-Regularization. UBC Technical Report TR-2009-19, 2009.
+
+Mark Schmidt, Glenn Fung, Romer Rosales. Fast Optimization Methods for 
+L1 Regularization: A Comparative Study and Two New Approaches. European
+Conference on Machine Learning (ECML), 2007.
+

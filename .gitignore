@@ -1,0 +1,16 @@
+ieee_spm_note/ieee_adjoints.aux
+ieee_spm_note/ieee_adjoints.bbl
+ieee_spm_note/ieee_adjoints.blg
+ieee_spm_note/ieee_adjoints.log
+ieee_spm_note/ieee_adjoints.pdf
+
+bce/data
+bce/L1General
+bce/trash
+
+wavelet/HNO/
+wavelet/ssim_index.m
+wavelet/export_fig/
+wavelet/trash
+
+*.zip
