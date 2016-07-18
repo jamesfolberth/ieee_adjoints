@@ -11,6 +11,7 @@
 \usepackage{array}
 
 \usepackage{graphicx}
+\usepackage{hyperref} % only for links at the end
 
 \usepackage{color}
 \usepackage{import}
@@ -40,7 +41,7 @@
         Stephen~Becker%
 \thanks{J. Folberth and S. Becker are with the Department
 of Applied Mathematics, University of Colorado at Boulder,
-Boulder, CO, 80309, USA}}
+Boulder, CO, 80309, USA.}}
 
 \markboth{IEEE Signal Processing Magazine: Lecture Notes}%
 {J. Folberth and S. Becker: Fast Adjoint Wavelet}
@@ -59,13 +60,13 @@ The reader should be familiar with linear algebra, wavelets, and basic Fourier a
 Many estimation problems are modeled using the composition of a differentiable loss $\ell$ with an affine map $x\mapsto\mathcal{A}x+b$, the simplest such examples being generalized linear models such as least-square data fitting. The gradient of $\ell \circ \A$ is given by the chain rule as $\mathcal{A}^* \nabla \ell( \A x + b)$. For small problems, $\A$ may be explicitly represented as a matrix and $\A^*$ calculated as the conjugate transpose of the matrix. 
 
 In contrast, larger problems are often carefully formulated to involve only linear operators $\A$ which have a fast transform (e.g., FFT, wavelet transform, convolution) and are therefore never explicitly stored as matrices.  While many software packages provide fast routines to compute $\A^{-1}$ or the pseudoinverse $\A^\dagger$, few packages include routines for $\A^*$.
-% Cite rice wavelet toolbox?
+
 The purpose of this note is to describe a few cases where one can compute the action of $\A^*$ with the same complexity as applying $\A$. Boundary conditions play a confounding role in the calculation, and we present a simple framework to correctly take them into account.
 
 
 \section{Example 1: An Image Deblurring Problem}
 % [[[
-Digital images can be blurred through a variety of means.  For example, the optical system can be out of focus and/or atmospheric turbulence can cause blurring of astronomical images.  The goal of image deblurring is to recover the original, sharp image. One class of techniques poses the deblurring problem  as an optimization problem, where the optimization variables are the wavelet coefficients of the recovered image.  We assume  that the blurring operator $\mathcal{R}$ is known. For instance, $\mathcal{R}$ could represent a Gaussian point spread function (PSF) under symmetric (reflexive) boundary conditions \cite{hansen_2006}. The blurring operator is usually singular or ill-conditioned.
+Digital images can be blurred through a variety of means.  For example, the optical system can be out of focus and/or atmospheric turbulence can cause blurring of astronomical images.  The goal of image deblurring is to recover the original, sharp image. One class of techniques poses the deblurring problem  as an optimization problem, where the optimization variables are the wavelet coefficients of the recovered image.  We assume  that the blurring operator $\mathcal{R}$ is known. For instance, $\mathcal{R}$ could represent a Gaussian point spread function (PSF) under symmetric (reflexive) boundary conditions. The blurring operator is usually singular or ill-conditioned \cite{hansen_2006}.
 
 Let $\mathcal{W}$ represent a multi-level wavelet reconstruction operator with suitable boundary conditions, $b$ be the observed, blurry image, and $\mathcal{A}=\mathcal{RW}$ be the linear operator that synthesizes an image from wavelet coefficients $x$ and then blurs the synthesized image under the blurring operator $\mathcal{R}$.  In order to both regularize the problem and to take into account that many real-world images have a sparse wavelet representation, we solve the following standard model which seeks to recover sparse wavelet coefficients that accurately reconstruct the blurred image:
 
@@ -82,16 +83,9 @@ The gradient of the differentiable term $f(x)={\frac{1}{2}\|\mathcal{RW}x-b\|_2^
 \[ \nabla f(x) = \mathcal{W}^\ast \mathcal{R}^\ast(\mathcal{RW}x-b). \] 
 
 \noindent In the case of a blurring PSF, we can apply $\mathcal{R}$ and $\mathcal{R}^\ast$ in $\mathcal{O}(N\log N)$ time in the Fourier domain via the FFT \cite{beck_2009, hansen_2006}.  Wavelet software packages (e.g., {\sc matlab} Wavelet Toolbox \cite{matlab_wt_2015}) implement discrete wavelet analysis and reconstruction in $\mathcal{O}(N)$ time; these operations correspond to $\mathcal{W}^\dagger$ and $\mathcal{W}$.  However, the adjoint of wavelet reconstruction, $\mathcal{W}^\ast$, is not implemented in software packages and is not expressly mentioned in the literature \cite{mallat_2009, strang_1996}.  A ``trick'' commonly used in practice is the ``pseudoinverse approximation'' $\mathcal{W}^\dagger\approx\mathcal{W}^\ast$, but we would like to find a way of computing the true adjoint of wavelet reconstruction (and analysis) in the same $\mathcal{O}(N)$ time. 
-%     how do we cite "the adjoint transform is not discussed"?
-%     Look in wavelet books.  Could say it's not discussed in standard textbooks such as Mallat, etc.  Check recent books (Daubechies' text probably doesn't have it, because it's old).
-%     The adjoint of the frame operator is mentioned in chapter 3 of Daubechies' "Ten Lectures".  It's given more detail in mallat_2009.
-%     The transpose basis/frame operator is discussed briefly on pp. 71-72 of strang_1996.  This seems to mention quite explicitly the transpose frame operator, but doesn't mention the adjoint/transpose wavelet operator.
-
-%     Could cite personal communication with Gabriel Peyre.
 
 
-% Here we try to briefly introduce the following sections.  
-To derive the true adjoint, we first separate $\mathcal{W}$ into signal extension and wavelet transform.  We recall a few common signal extensions, consider the case of orthogonal wavelets, and then use a property of frames to construct the adjoint for biorthogonal wavelets.  It transpires that we only need to implement the adjoint of the signal extensions and may use existing software for the more complicated wavelet transforms.
+To derive the true adjoint, we first separate $\mathcal{W}$ into signal extension and wavelet transform.  We recall a few common signal extensions, consider the case of orthogonal wavelets, and then use a property of frames to construct the adjoint for biorthogonal wavelets.  It transpires that we only need to implement the adjoint of the signal extensions and may use existing software for the wavelet transforms.
 
 \subsection{A few signal extensions}
 To implement a wavelet transform with boundary conditions, a popular method is to extend the given signal to satisfy the desired boundary conditions and then transform the extended signal; this is the approach used in {\sc matlab}'s Wavelet Toolbox \cite{matlab_wt_2015}.  If we let $\mathcal{E}$ be the desired extension operator and $\mathcal{W}^\dagger_\text{zpd}$ be the wavelet analysis operator for extended signals under zero boundary conditions, we can write wavelet analysis as 
@@ -107,7 +101,7 @@ Consider a $1$-dimensional signal $y[n]$, $n=0,...,N-1$.  \footnote{We consider 
 
    \noindent We see that $\mathcal{E}_\text{zpd}$ has orthonormal columns, so that ${\mathcal{E}_\text{zpd}^\dagger\mathcal{E}_\text{zpd} = \mathcal{E}_\text{zpd}^\ast\mathcal{E}_\text{zpd}=I}$.
 
-   Note that $\mathcal{W}_\text{zpd}$ implemented in existing software may also implicitly contain a zero-padded extension.  When we apply wavelet analysis, $\mathcal{W}_\text{zpd}^\dagger$, we implicitly apply $\mathcal{E}_\text{zpd}^\dagger$.  However, since zero-padding is orthonormal, $\mathcal{E}_\text{zpd}^\dagger=\mathcal{E}_\text{zpd}^\ast$, and so we can in general write the adjoint as 
+   Note that $\mathcal{W}_\text{zpd}$ implemented in existing software may also implicitly contain a zero-padded extension.  When we apply wavelet analysis, $\mathcal{W}_\text{zpd}^\dagger$, we implicitly apply $\mathcal{E}_\text{zpd}^\dagger$.  However, since zero-padding is orthonormal, $\mathcal{E}_\text{zpd}^\dagger=\mathcal{E}_\text{zpd}^\ast$, and so we can, for a general wavelet transform, write the adjoint as 
 
 \begin{equation}
 \label{eq:wzpd_adjoint}
@@ -116,14 +110,13 @@ Consider a $1$-dimensional signal $y[n]$, $n=0,...,N-1$.  \footnote{We consider 
 
 \noindent The splitting in equation (\ref{eq:wzpd_adjoint}) allows us to correctly handle the adjoint extension ourselves.  It remains to implement $\left(\mathcal{E}^\dagger\right)^\ast$ and determine how to apply $\mathcal{W}^\ast_\text{zpd}$ with existing software.
 
-%Although the zero-padded extension is simple to work with, it is not usually a reasonable extension mode for practical applications. 
 The zero-padded extension is not often used by itself since it can introduce boundary artifacts.
- A better extension mode is the half-point symmetric extension, which is the default extension mode in {\sc matlab}'s Wavelet Toolbox \cite{matlab_wt_2015}.  The double sided half-point symmetric extension reflects the signal about its boundaries in the following manner:
+ A better extension mode is the half-point symmetric extension, which is the default extension mode in {\sc matlab}'s Wavelet Toolbox \cite{strang_1996, matlab_wt_2015}.  The double sided half-point symmetric extension reflects the signal about its boundaries in the following manner:
 
 %TODO this is slightly too wide
 \[ \underbrace{y[L-1], ..., y[0]}_\text{Left extension}, y[0], ..., y[N-1], \underbrace{y[N-1], ..., y[N+L-2]}_\text{Right extension}. \] 
 
-\noindent As in the zero-padded case, we can readily form a matrix that performs this operation on $y[n]$.  Let $P$ be the appropriately sized permutation matrix that reverses the ordering of the columns.  Then we have
+\noindent As in the zero-padded case, we can readily form a matrix that performs this operation on $y[n]$.  Let $P$ be the appropriately sized permutation matrix that reverses the ordering of columns.  Then we have
 
 \[ \scalemath{0.8}{\mathcal{E}_\text{sym} = \begin{bmatrix} & & \iddots & & &\\ & 1 &&&&\\ 1&&&&&\\1&&&&\\&1&&&&\\&&\ddots&&&\\&&&1&\\&&&&1\\&&&&1\\&&&1&\\&&\iddots&&\end{bmatrix} = \begin{bmatrix}I_{L'\times L'}P & 0 & 0\\I_{L'\times L'} & 0 & 0\\0 & I_{N-2L'\times N-2L'} & 0\\0&0&I_{L'\times L'}\\0&0&I_{L'\times L'}P\end{bmatrix}.} \]
 
@@ -132,9 +125,8 @@ The zero-padded extension is not often used by itself since it can introduce bou
 \[ \left(\mathcal{E}_\text{sym}^\dagger\right)^\ast = \begin{bmatrix}\frac{1}{2}I_{L'\times L'}P & 0 & 0\\\frac{1}{2}I_{L'\times L'} & 0 & 0\\0 & I_{N-2L'\times N-2L'} & 0\\0&0&\frac{1}{2}I_{L'\times L'}\\0&0&\frac{1}{2}I_{L'\times L'}P\end{bmatrix}. \]
 
 \noindent If ${N \le 2L'}$, the form of the pseudoinverse is slightly different, with some of the $1/2$ terms becoming $1/3$.
-%TODO clean up code and put online? both cases are considered in our implementation.
 
-Another standard extension (at least in 1d) is the periodic extension.  Similar to the half-point symmetric extension, the periodic extension operator is
+Another standard extension is the periodic extension.  Similar to the half-point symmetric extension, the periodic extension operator is
 
 \[ \mathcal{E}_\text{per} = \begin{bmatrix} 0 & 0 & I_{L'\times L'}\\&I_{N\times N}&\\I_{L'\times L'}&0&0\end{bmatrix} \] 
 
@@ -205,7 +197,7 @@ Let $y\in\reals^N$ be an arbitrary signal vector and $\{\phi_i\}_{i=1}^p$, $p\ge
 
    \noindent We present other relationships between the primal and dual frames in Tabel \ref{tab:frame_relations}.  Note that $\Phi^\dagger\Phi=I$ but $\Phi\Phi^\dagger\neq I$ in general.
 
-   In (\ref{eq:wave_dual_frame}) we have $\mathcal{W}_\text{zpd}^\ast$ in terms of dual frame analysis.  For biorthogonal wavelets, dual frame analysis corresponds to wavelet analysis with the dual wavelets, which has a fast transform and is typically implemented together with the primal wavelets \cite{matlab_wt_2015}.  For biorthogonal (and orthogonal) wavelets, this states $\mathcal{W}^\ast_\text{zpd}=\dual{\mathcal{W}}_\text{zpd}^\dagger$, the latter of which is standard and has a fast implementation.  Combining this with the signal extension operator, we finally find
+   In (\ref{eq:wave_dual_frame}) we have $\mathcal{W}_\text{zpd}^\ast$ in terms of dual frame analysis.  For biorthogonal wavelets, dual frame analysis corresponds to wavelet analysis with the dual wavelets, which has a fast transform and is typically implemented together with the primal wavelets \cite{matlab_wt_2015}.  For biorthogonal (and orthogonal) wavelets, this states $\mathcal{W}^\ast_\text{zpd}=\dual{\mathcal{W}}_\text{zpd}^\dagger$, the latter of which is a standard operation and has a fast implementation.  Combining this with the signal extension operator, we finally find
 
    \begin{equation}
    \label{eq:full_wave_adjoint}
@@ -244,7 +236,7 @@ Figure \ref{fig:adjoint_convergence} shows the structural similarity index \cite
 % [[[
 %Matched filter derivation: \cite{claerbout_1992}\\
 
-Another application that depends on a fast adjoint in the gradient computation is in some formulations of blind channel estimation.  In blind channel estimation, a single source sends an unknown signal over multiple channels with unknown response.  Observers collect the output of each channel and collectively attempt to determine the source signal and the channel impulse response from each channel.  Let $s$ be the unknown source signal of length $N$ and $h_i$ the channel impulse response of the $i^\text{th}$ channel, each of length $K$.  Then the output of the $i^\text{th}$ channel is
+Another application that depends on a fast adjoint in the gradient computation is in some formulations of blind channel estimation.  In blind channel estimation, a single source sends an unknown signal over multiple channels with unknown responses.  Observers collect the output of each channel and collectively attempt to determine the source signal and the channel impulse response from each channel.  Let $s$ be the unknown source signal of length $N$ and $h_i$ the channel impulse response of the $i^\text{th}$ channel, each of length $K$.  Then the output of the $i^\text{th}$ channel is
 
 \[ x_i = h_i\ast s, \] 
 
@@ -356,6 +348,8 @@ Another interesting adjoint appears in a blind channel estimation optimization p
 \begin{IEEEbiographynophoto}{Stephen Becker} is an assistant professor in the department of Applied Mathematics at  the University of Colorado at Boulder. He was the recipient of a postdoctoral fellowship to study at Paris 6, and the Goldstine postdoctoral fellowship at IBM Research. He completed his PhD in 2011 in Applied and Computational Mathematics from the California Institute of Technology, and his bachelors in Mathematics and Physics from Wesleyan University. His work on the TFOCS algorithm won the triennial Beale-Orchard-Hays Prize from the Mathematical Optimization Society.
    His current research is centered around deriving efficient optimization methods for large-scale data analysis, with emphasis on techniques for sparse and low-rank models.
 \end{IEEEbiographynophoto}
+
+This paper has supplementary downloadable material available at \url{https://github.com/jamesfolberth/ieee_adjoints}, provided by the authors. The material includes {\sc matlab} implementations of the adjoint operators discussed in this note. Contact \url{james.folberth@colorado.edu} for further questions about this work.
 
 \end{document}
 
