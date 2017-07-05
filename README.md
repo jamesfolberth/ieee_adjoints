@@ -1,5 +1,5 @@
 # Efficient Adjoint Computation for Wavelet and Convolution Operators
-This repository contains code to reproduce the figures in the IEEE Signal Processing Magazine Lecture Note "Efficient Adjoint Computation for Wavelet and Convolution Operators", by James Folberth and Stephen Becker.
+This repository contains code to reproduce the figures in the IEEE Signal Processing Magazine Lecture Note ["Efficient Adjoint Computation for Wavelet and Convolution Operators"](http://ieeexplore.ieee.org/document/7736183/), by James Folberth and Stephen Becker.
 
 There are various dependencies, which can be fetched with `get_deps.m`.
 

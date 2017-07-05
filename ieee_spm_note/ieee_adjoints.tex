@@ -53,6 +53,11 @@ Boulder, CO, 80309, USA.}}
    First-order optimization algorithms, often preferred for large problems, require the gradient of the differentiable terms in the objective function.  These gradients often involve linear operators and their adjoints, which must be applied rapidly.  We consider two example problems and derive methods for quickly evaluating the required adjoint operator.  The first example is an image deblurring problem, where we must compute efficiently the adjoint of multi-stage wavelet reconstruction.  Our formulation of the adjoint works for a variety of boundary conditions, which allows the formulation to generalize to a larger class of problems.  The second example is a blind channel estimation problem taken from the optimization literature where we must compute the adjoint of the convolution of two signals.  In each example, we show how the adjoint operator can be applied efficiently while leveraging existing software.
 \end{abstract}
 
+DOI: \url{https://doi.org/10.1109/MSP.2016.2594277}.
+
+\textcopyright\, 2016 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
+This work is published in the IEEE Signal Processing Magazine, Volume 33, Issue 6, November 2016, pp. 135-147.
+
 \subsection*{Prerequisites}
 The reader should be familiar with linear algebra, wavelets, and basic Fourier analysis.  Knowledge of first-order iterative optimization algorithms is beneficial for motivating the need for a fast adjoint computation, but should not be necessary to understand the adjoint computation itself.
 
